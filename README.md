@@ -18,6 +18,7 @@ Bu proje, [SauceDemo](https://www.saucedemo.com) e-ticaret sitesi üzerinde **Pa
 ## Test Senaryoları
 * **Pozitif Login Testi:** Geçerli kullanıcı bilgileri ile sisteme başarılı giriş doğrulaması.
 * **Negatif Login Testi:** Hatalı şifre ile giriş denemesinde uyarı mesajının görüntülendiğinin doğrulaması.
+* **Sepete Ürün Ekleme Testi:** Giriş yapıldıktan sonra ürünün sepete eklendiğinin ve sepet sayacının güncellendiğinin doğrulaması.
 
 ## Projeyi Çalıştırma
 1. Projeyi bilgisayarınıza klonlayın.
