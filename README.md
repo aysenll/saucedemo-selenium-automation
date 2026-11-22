@@ -7,18 +7,21 @@ Bu proje, [SauceDemo](https://www.saucedemo.com) e-ticaret sitesi üzerinde **Pa
 * **Otomasyon Aracı:** Selenium WebDriver 4
 * **Test Çerçevesi:** TestNG
 * **Bağımlılık Yönetimi:** Maven
-* **Raporlama:** Extent Reports (HTML Raporu)
+* **Raporlama:** Extent Reports (Otomatik Base64 Ekran Görüntülü HTML Raporu)
 
 ## Mimari Özellikler
-* **Singleton Pattern:** `Driver` sınıfı ile test boyunca tek bir WebDriver oturumu yönetilir.
+* **Page Object Model (POM):** Sayfa elementleri ve aksiyonları `pages` paketinde (`LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage`), test doğrulamaları `tests` paketinde ayrı tutulur.
+* **Singleton Pattern & ChromeOptions:** `Driver` sınıfı ile tek WebDriver oturumu yönetilir; tarayıcı `--start-maximized` ve `--incognito` parametreleriyle başlatılır.
 * **Merkezi Konfigürasyon:** URL ve tarayıcı ayarları `configuration.properties` dosyasından `ConfigReader` ile dinamik olarak okunur (Cross-Browser desteği).
-* **Kalıtım (Inheritance):** `TestBase` sınıfı ile tarayıcı kurulumu, kapatma ve raporlama yaşam döngüsü (`@BeforeTest`, `@BeforeMethod`, `@AfterMethod`, `@AfterTest`) tek merkezden yönetilir.
-* **Page Object Model (POM):** Web elementleri ve sayfa aksiyonları `pages` paketinde, test doğrulamaları `tests` paketinde ayrı tutulur.
+* **Senkronizasyon (Wait Stratejisi):** Genel element yüklemeleri için `Implicit Wait`, sayfa geçişleri ve dinamik butonlar için `Explicit Wait (WebDriverWait)` kullanılır.
+* **Hata Anında Otomatik Ekran Görüntüsü:** `TestBase` içindeki `@AfterMethod` (`ITestResult`) kontrolü sayesinde başarısız olan testlerde `TakesScreenshot` ile Base64 ekran görüntüsü alınıp doğrudan HTML raporuna gömülür.
 
 ## Test Senaryoları
 * **Pozitif Login Testi:** Geçerli kullanıcı bilgileri ile sisteme başarılı giriş doğrulaması.
 * **Negatif Login Testi:** Hatalı şifre ile giriş denemesinde uyarı mesajının görüntülendiğinin doğrulaması.
-* **Sepete Ürün Ekleme Testi:** Giriş yapıldıktan sonra ürünün sepete eklendiğinin ve sepet sayacının güncellendiğinin doğrulaması.
+* **Sepete Ürün Ekleme Testi:** Ürünün sepete eklendiğinin ve sepet sayacının güncellendiğinin doğrulaması.
+* **Fiyat Sıralama Testi:** Açılır menü (`Select`) üzerinden ürünlerin ucuzdan pahalıya sıralandığının liste karşılaştırmasıyla doğrulaması.
+* **Uçtan Uca (E2E) Satın Alma Testi:** Giriş, sepete ekleme, sepet sayfası, müşteri bilgi formu ve sipariş onayı adımlarının kesintisiz doğrulanması.
 
 ## Projeyi Çalıştırma
 1. Projeyi bilgisayarınıza klonlayın.

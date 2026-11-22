@@ -2,7 +2,11 @@ package base;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
@@ -46,12 +50,23 @@ public class TestBase {
 
 
     @AfterMethod
-    public void tearDown(){
+    public void tearDown(ITestResult result) {
+        //eger test basarisiz olduysa tarayici kapanmadan ekran goruntusu alma
+        if(result.getStatus() == ITestResult.FAILURE && extentTest != null){
+            String base64Screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BASE64);
+            extentTest.fail("Test Başarısız Oldu: " + result.getName());
+            extentTest.fail(result.getThrowable());
+            extentTest.fail(
+                    "Hata Anı Ekran Görüntüsü:",
+                    MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build()
+            );
+        }
         Driver.closeDriver();
     }
 
     @AfterTest
     public void tearDownReport(){
+
         extentReports.flush();
     }
 
